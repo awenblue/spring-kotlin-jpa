@@ -1,3 +1,31 @@
+## Spring-Kotlin-jpa
+
+    使用spring boot 2.0 + kotlin + jpa创建的基础项目，用于新项目的创建
+    
+
+
+
+## 目录简介
+
+    common      请求参数和返回DTO 
+    config      日志aop，swagger接口配置 
+    controller  controller 
+    repository  数据库配置，包含jpa
+    service     逻辑service和数据service 
+    util        工具
+
+
+
+## 功能配置
+
+    接口统一日志打印 ✔
+    登录token生成   ✖
+    请求头token校验 ✖
+    验证码生成  ✖
+    redis配置  ✖
+    
+
+
 ## License
 
     Copyright 2018 The awen_blue Authors
