@@ -30,6 +30,7 @@ import org.springframework.web.context.request.ServletRequestAttributes
 import org.springframework.web.multipart.MultipartHttpServletRequest
 import java.io.IOException
 import javax.servlet.ServletRequest
+import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
 @Aspect
@@ -118,7 +119,7 @@ class LogAspect {
 
                     arg = if (obj is MultipartHttpServletRequest)
                         "{\"" + (obj.parameterMap["postJsonData"]?.get(0) ?: "") + "\"}"
-                    else if (obj is ServletRequest)
+                    else if (obj is ServletRequest || obj is ServletResponse || obj is ServletRequest)
                         continue
                     else
                         GsonFactory.getCustomWhitDateFormat().toJson(obj)
