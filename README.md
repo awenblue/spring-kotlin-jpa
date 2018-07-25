@@ -19,12 +19,15 @@
 ## 功能配置
 
     接口统一日志打印 ✔
+    验证码生成  ✔
+    memcached缓存配置  ✔
     登录token生成   ✖
     请求头token校验 ✖
-    验证码生成  ✖
     redis配置  ✖
     
+## 运行环境
 
+    安装memcached，连接地址在cache-client.properties配置，多个用逗号,分隔
 
 ## License
 

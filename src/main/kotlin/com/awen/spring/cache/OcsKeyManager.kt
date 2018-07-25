@@ -15,35 +15,23 @@
  *     limitations under the License.
  */
 
-package com.awen.spring.util
+package com.awen.spring.cache
 
-import com.awen.spring.common.constant.ErrorType
-import com.awen.spring.common.dto.ResultDTO
+interface OcsKeyManager {
 
-object ResultUtil {
+    /**
+     * 放入缓存
+     * @param key
+     * @param exp    单位秒
+     * @param value
+     * @throws Exception
+     */
+    @Throws(Exception::class)
+    operator fun set(key: String, exp: Int, value: Any)
 
-    private const val SUCCESS = 10000
+    @Throws(Exception::class)
+    operator fun get(key: String): Any?
 
-    fun failed(): ResultDTO<Any> {
-
-        return failed(ErrorType.ERROR_NO_DATA)
-    }
-
-    fun failed(errorType: ErrorType): ResultDTO<Any> {
-
-        return ResultDTO(errorType.errorId, errorType.errorMessage)
-    }
-
-    fun success(): ResultDTO<Any> {
-
-        return success(null)
-    }
-
-    fun <T> success(`object`: T?): ResultDTO<T> {
-
-        return ResultDTO(SUCCESS, null, `object`)
-    }
-
-
+    fun close()
 
 }

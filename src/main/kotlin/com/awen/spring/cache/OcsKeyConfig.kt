@@ -15,35 +15,26 @@
  *     limitations under the License.
  */
 
-package com.awen.spring.util
+package com.awen.spring.cache
 
-import com.awen.spring.common.constant.ErrorType
-import com.awen.spring.common.dto.ResultDTO
+object OcsKeyConfig {
 
-object ResultUtil {
+    val TEN_MIN = 10 * 60
 
-    private const val SUCCESS = 10000
+    val TOKEN_INVALID_TIME = 7 * 24 * 60 * 60
 
-    fun failed(): ResultDTO<Any> {
+    private val KEY_REGISTER = "%s_REGISTER"
 
-        return failed(ErrorType.ERROR_NO_DATA)
+    private val KEY_TOKEN = "%s_TOKEN"
+
+    fun getRegisterKey(phone: String): String {
+
+        return String.format(KEY_REGISTER, phone)
     }
 
-    fun failed(errorType: ErrorType): ResultDTO<Any> {
+    fun getTokenKey(token: String): String {
 
-        return ResultDTO(errorType.errorId, errorType.errorMessage)
+        return String.format(KEY_TOKEN, token)
     }
-
-    fun success(): ResultDTO<Any> {
-
-        return success(null)
-    }
-
-    fun <T> success(`object`: T?): ResultDTO<T> {
-
-        return ResultDTO(SUCCESS, null, `object`)
-    }
-
-
 
 }
