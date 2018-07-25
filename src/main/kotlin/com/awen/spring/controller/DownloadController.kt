@@ -1,15 +1,12 @@
 package com.awen.spring.controller
 
+import com.awen.spring.model.ExcelData
 import com.awen.spring.util.ExportExcelUtils
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 import javax.servlet.http.HttpServletResponse
-import java.util.ArrayList
-import com.awen.spring.model.ExcelData
-
-
 
 
 @RestController
@@ -18,7 +15,7 @@ class DownloadController {
     private val logger = LoggerFactory.getLogger(DownloadController::class.java)
 
     @GetMapping("/abc")
-    fun downloadFile(response: HttpServletResponse) {
+    fun downloadExcel(response: HttpServletResponse) {
 
         val titles = arrayListOf<String>()
         titles.add("a1")
