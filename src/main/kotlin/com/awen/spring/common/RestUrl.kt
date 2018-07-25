@@ -25,9 +25,10 @@ object RestUrl {
     const val HOME = "$APP_BASE_URL/home"
 
 
-    const val USER = "$APP_BASE_URL/user"
+    private const val USER = "$APP_BASE_URL/user"
     const val USER_LOGIN = "$USER/userLogin"
 
-
+    private const val COMMON = "$APP_BASE_URL/common"
+    const val sendSms = "$COMMON/sendSms"
 
 }
