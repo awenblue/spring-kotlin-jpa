@@ -29,15 +29,18 @@ apply plugin: 'idea'
 
 allprojects {
     repositories {
+        mavenCentral()
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     }
 }
 
 sourceCompatibility = 1.8
+mainClassName = 'com.awen.spring.ApplicationKt'
 
 repositories {
     mavenCentral()
 }
+
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
