@@ -21,9 +21,9 @@
     接口统一日志打印 ✔
     验证码生成  ✔
     memcached缓存配置  ✔
+    redis配置  ✔
     登录token生成   ✖
     请求头token校验 ✖
-    redis配置  ✖
     
 ## 运行环境
 
