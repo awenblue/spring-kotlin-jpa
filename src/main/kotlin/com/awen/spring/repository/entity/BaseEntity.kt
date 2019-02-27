@@ -17,6 +17,7 @@
 
 package com.awen.spring.repository.entity
 
+import java.util.*
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -27,4 +28,6 @@ abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     var id: Long = -1
+    var createDate: Date = Date()
+    var updateDate: Date = Date()
 }
