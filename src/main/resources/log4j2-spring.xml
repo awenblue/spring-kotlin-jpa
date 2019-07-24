@@ -55,7 +55,7 @@
     <!-- 全局配置，默认所有的Logger都继承此配置 -->
     <Loggers>
         <!-- AsyncRoot - 异步记录日志 - 需要LMAX Disruptor的支持 -->
-        <AsyncRoot level="info" additivity="false">
+        <AsyncRoot level="debug" additivity="false">
             <AppenderRef ref="console"/>
             <AppenderRef ref="infoFile"/>
             <AppenderRef ref="errorFile"/>
