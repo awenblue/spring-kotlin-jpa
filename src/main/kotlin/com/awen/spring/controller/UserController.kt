@@ -35,7 +35,7 @@ class UserController {
     @Resource
     private lateinit var userLogicService: UserLogicService
 
-    @PostMapping(RestUrl.USER_LOGIN, produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)])
+    @PostMapping(RestUrl.userLOGIN, produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)])
     @ResponseBody
     fun userLogin(@RequestBody param: UserLoginParam): ResultDTO<UserDTO> = userLogicService.userLogin(param) as ResultDTO<UserDTO>
 
