@@ -25,8 +25,8 @@ class DataSourceConfig {
     @Value("\${spring.datasource.password}")
     private val password: String? = null
 
-    @Bean
-    fun dataSource(): DataSource {
+    @Bean(destroyMethod = "close")
+    fun dataSource(): HikariDataSource {
         val config = HikariConfig()
         config.jdbcUrl = dataSourceUrl //数据源
         config.username = user //用户名
