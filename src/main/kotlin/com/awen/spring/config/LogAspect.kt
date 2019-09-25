@@ -78,7 +78,7 @@ class LogAspect {
             val cost = (System.nanoTime() - start) * 1.0 / 1E6
             info = String.format(LogTemplate, ip, url, params, GsonFactory.getCustomWhitDateFormat().toJson(result), cost)
 
-            logger.debug(info)
+            logger.info(info)
         } catch (e: Throwable) {
             e.printStackTrace()
 
