@@ -12,7 +12,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_PASSWORD=123456
       - MYSQL_DATABASE=db_aus
-    command: mysqld --skip-ssl
+    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
   web:
     build:
       context: .
