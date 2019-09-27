@@ -6,6 +6,7 @@ services:
     expose:
       - "3306"
     environment:
+      - TZ=Asia/Shanghai
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_PASSWORD=123456
       - MYSQL_DATABASE=db_aus
@@ -15,6 +16,10 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: on-failure
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./logs:/log
     ports:
       - "31000:31000"
     depends_on:
