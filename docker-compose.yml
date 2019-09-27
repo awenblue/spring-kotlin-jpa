@@ -5,6 +5,8 @@ services:
     restart: always
     expose:
       - "3306"
+    volumes:
+      - ./data:/var/lib/mysql
     environment:
       - TZ=Asia/Shanghai
       - MYSQL_ROOT_PASSWORD=123456
@@ -20,7 +22,17 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - ./logs:/log
-    ports:
-      - "31000:31000"
+    expose:
+      - "31000"
     depends_on:
       - mysql
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "8080:80"
+      - "8000:8000"
