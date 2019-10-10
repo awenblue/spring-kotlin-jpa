@@ -17,35 +17,32 @@
 
 package com.awen.spring.service.data
 
+import com.awen.spring.model.UserModel
 import com.awen.spring.repository.entity.UserEntity
+import com.awen.spring.repository.jpa.BaseRepository
 import com.awen.spring.repository.jpa.UserRepository
 import org.springframework.stereotype.Service
 import javax.annotation.Resource
 
 @Service
-class UserDataService {
+class UserDataService: BaseDataService<UserModel, UserEntity>() {
 
     @Resource
     private lateinit var userRepository: UserRepository
 
-    fun getById(userId: Long): UserEntity? {
-        val optional = userRepository.findById(userId)
+    fun getByAccount(account: String, password: String): UserModel {
+        val userModel = UserModel()
 
-        return if (optional.isPresent) {
-            optional.get()
-        } else {
-            null
-        }
+        userRepository.findByAccount(account).ifPresent { userModel.init(it) }
+
+        return userModel
     }
 
-    fun getByAccount(account: String, password: String): UserEntity? {
-        val entity = userRepository.findByAccount(account)?:return null
-
-        return if (entity.password != password) {
-            null
-        } else {
-            entity
-        }
+    override fun repository(): BaseRepository<UserEntity> {
+        return userRepository
     }
 
+    override fun clazz(): Class<UserModel> {
+        return UserModel::class.java
+    }
 }

@@ -1,7 +1,7 @@
 package com.awen.spring.service
 
 import com.awen.spring.common.param.BasePageParam
-import com.awen.spring.model.base.BaseModel
+import com.awen.spring.model.BaseModel
 import com.awen.spring.repository.entity.BaseEntity
 import com.awen.spring.service.data.BasePageList
 

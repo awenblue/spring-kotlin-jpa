@@ -39,7 +39,8 @@ class UserLogicService {
         }
 
         val userEntity = userDataService.getByAccount(param.account!!, param.password!!)
-                ?: return ResultUtil.failed(ErrorType.ERROR_USER_LOGIN)
+        if (userEntity.notExist())
+            return ResultUtil.failed(ErrorType.ERROR_USER_LOGIN)
 
         return ResultUtil.success(UserDTO(
                 userEntity.id, userEntity.account

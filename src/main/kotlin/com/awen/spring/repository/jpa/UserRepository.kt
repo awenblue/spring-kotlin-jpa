@@ -18,11 +18,11 @@
 package com.awen.spring.repository.jpa
 
 import com.awen.spring.repository.entity.UserEntity
-import org.springframework.data.jpa.repository.JpaRepository
+import java.util.*
 
-interface UserRepository: JpaRepository<UserEntity, Long> {
+interface UserRepository: BaseRepository<UserEntity> {
 
-    fun findByAccount(account: String): UserEntity?
+    fun findByAccount(account: String): Optional<UserEntity>
 
 
 

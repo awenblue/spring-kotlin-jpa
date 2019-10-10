@@ -1,4 +1,4 @@
-package com.awen.spring.model.base
+package com.awen.spring.model
 
 import com.awen.spring.repository.entity.BaseEntity
 import java.util.*
@@ -9,15 +9,17 @@ abstract class BaseModel<T: BaseEntity> {
     var createDate: Date = Date()
     var updateDate: Date = Date()
 
-    abstract fun init(entity: T)
+    fun init(entity: T) {
+        id = entity.id
+        createDate = entity.createDate
+        updateDate = entity.updateDate
+
+        initModel(entity)
+    }
+
+    protected abstract fun initModel(entity: T)
 
     abstract fun toEntity(): T
-
-    protected fun initBaseModel(t: T) {
-        id = t.id
-        createDate = t.createDate
-        updateDate = t.updateDate
-    }
 
     protected fun initBaseEntity(t: T): T {
         if (id <= 0) id = -1L

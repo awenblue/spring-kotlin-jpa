@@ -1,7 +1,7 @@
 package com.awen.spring.service.data
 
 import com.awen.spring.common.param.BasePageParam
-import com.awen.spring.model.base.BaseModel
+import com.awen.spring.model.BaseModel
 import com.awen.spring.repository.entity.BaseEntity
 import com.awen.spring.repository.jpa.BaseRepository
 import com.awen.spring.service.BaseModelDataService
@@ -13,9 +13,9 @@ import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
-abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity> (private val repository: BaseRepository<Y>) : BaseModelDataService<T, Y> {
+abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity> : BaseModelDataService<T, Y> {
 
-    protected abstract fun repository():BaseRepository<Y>
+    protected abstract fun repository(): BaseRepository<Y>
 
     protected abstract fun clazz(): Class<T>
 
@@ -32,9 +32,9 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity> (private val repo
         }
 
         return if (column == null) {
-            repository.findAll()
+            repository().findAll()
         } else {
-            repository.findAll(Sort.by(asc, column))
+            repository().findAll(Sort.by(asc, column))
         }.map {
             val model = newInstance()
             model.init(it)
@@ -68,7 +68,7 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity> (private val repo
             builder.and(*toTypedArray)
         }
 
-        val findAll = repository.findAll(specification, rowBounds)
+        val findAll = repository().findAll(specification, rowBounds)
 
         pageParam.page = findAll.totalPages
         pageParam.pageSize = findAll.totalElements.toInt()
@@ -84,7 +84,7 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity> (private val repo
 
         val model = newInstance()
 
-        repository.findById(id).ifPresent {
+        repository().findById(id).ifPresent {
             model.init(it)
         }
 
@@ -93,7 +93,7 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity> (private val repo
 
     override fun getByIds(ids: List<Long>): List<T> {
 
-        return repository.findAllById(ids).map {
+        return repository().findAllById(ids).map {
             val model = newInstance()
             model.init(it)
 
@@ -106,7 +106,7 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity> (private val repo
             model.updateDate = Date()
         }
 
-        val save = repository.save(model.toEntity())
+        val save = repository().save(model.toEntity())
         model.id = save.id
 
         return model
@@ -121,13 +121,13 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity> (private val repo
             it.toEntity()
         }
 
-        repository.saveAll(map)
+        repository().saveAll(map)
 
         return model
     }
 
     override fun deleteModel(model: T) {
-        repository.delete(model.toEntity())
+        repository().delete(model.toEntity())
     }
 
     private fun newInstance(): T {
