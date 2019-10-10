@@ -28,6 +28,9 @@ abstract class SMSService(
 
     abstract fun sms(): Boolean
 
+    override fun run() {
+        sms()
+    }
 
     override fun toString(): String {
         return "SMSService(phoneNumber='$phoneNumber', validationCode='$validationCode', areaCode='$areaCode', smsType=$smsType)"

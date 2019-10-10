@@ -13,14 +13,18 @@ import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
-abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity>: BaseModelDataService<T, Y> {
+abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity> (private val repository: BaseRepository<Y>) : BaseModelDataService<T, Y> {
 
-    override fun getList(repository: BaseRepository<Y>, clazz: Class<T>): List<T> {
+    protected abstract fun repository():BaseRepository<Y>
 
-        return getListSort(repository, clazz, null, null)
+    protected abstract fun clazz(): Class<T>
+
+    override fun getList(): List<T> {
+
+        return getListSort(null, null)
     }
 
-    override fun getListSort(repository: BaseRepository<Y>, clazz: Class<T>, column: String?, desc: Boolean?): List<T> {
+    override fun getListSort(column: String?, desc: Boolean?): List<T> {
 
         var asc = Sort.Direction.ASC
         desc?.also {
@@ -32,18 +36,18 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity>: BaseModelDataSer
         } else {
             repository.findAll(Sort.by(asc, column))
         }.map {
-            val model = newInstance(clazz)
+            val model = newInstance()
             model.init(it)
             model
         }
     }
 
-    override fun getList(pageParam: BasePageParam, repository: BaseRepository<Y>, clazz: Class<T>): List<T> {
+    override fun getList(pageParam: BasePageParam): List<T> {
 
-        return getList(pageParam, repository, clazz, BasePageList())
+        return getList(pageParam, BasePageList())
     }
 
-    override fun getList(pageParam: BasePageParam, repository: BaseRepository<Y>, clazz: Class<T>, basePage: BasePageList<Y>): List<T> {
+    override fun getList(pageParam: BasePageParam, basePage: BasePageList<Y>): List<T> {
         val column = basePage.getSortColumn(pageParam)
 
         var asc = Sort.Direction.ASC
@@ -70,15 +74,15 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity>: BaseModelDataSer
         pageParam.pageSize = findAll.totalElements.toInt()
 
         return findAll.content.map { entity ->
-            val model = newInstance(clazz)
+            val model = newInstance()
             model.init(entity)
             model
         }
     }
 
-    override fun getById(id: Long, repository: BaseRepository<Y>, clazz: Class<T>): T {
+    override fun getById(id: Long): T {
 
-        val model = newInstance(clazz)
+        val model = newInstance()
 
         repository.findById(id).ifPresent {
             model.init(it)
@@ -87,17 +91,17 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity>: BaseModelDataSer
         return model
     }
 
-    override fun getByIds(ids: List<Long>, repository: BaseRepository<Y>, clazz: Class<T>): List<T> {
+    override fun getByIds(ids: List<Long>): List<T> {
 
         return repository.findAllById(ids).map {
-            val model = newInstance(clazz)
+            val model = newInstance()
             model.init(it)
 
             model
         }
     }
 
-    override fun addModel(model: T, repository: BaseRepository<Y>): T {
+    override fun addOrUpdateModel(model: T): T {
         if (model.exist()) {
             model.updateDate = Date()
         }
@@ -108,7 +112,7 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity>: BaseModelDataSer
         return model
     }
 
-    override fun addModel(model: List<T>, repository: BaseRepository<Y>): List<T> {
+    override fun addOrUpdateModels(model: List<T>): List<T> {
         val date = Date()
         val map = model.map {
             if (it.exist()) {
@@ -122,20 +126,13 @@ abstract class BaseDataService<T: BaseModel<Y>, Y: BaseEntity>: BaseModelDataSer
         return model
     }
 
-    override fun updateModel(model: T, repository: BaseRepository<Y>): T {
-        model.updateDate = Date()
-        repository.save(model.toEntity())
-
-        return model
-    }
-
-    override fun deleteModel(model: T, repository: BaseRepository<Y>) {
+    override fun deleteModel(model: T) {
         repository.delete(model.toEntity())
     }
 
-    private fun newInstance(clazz: Class<T>): T {
+    private fun newInstance(): T {
 
-        return clazz.getDeclaredConstructor().newInstance()
+        return clazz().getDeclaredConstructor().newInstance()
     }
 }
 

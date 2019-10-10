@@ -49,8 +49,4 @@ class DemoSmsTaskService(
         return true
     }
 
-    override fun run() {
-        sms()
-    }
-
 }
