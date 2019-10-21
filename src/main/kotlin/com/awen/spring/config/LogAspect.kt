@@ -60,7 +60,7 @@ class LogAspect {
      */
     @Around("controllerAspect()")
     @Throws(IOException::class)
-    fun doArround(joinPoint: ProceedingJoinPoint): Any {
+    fun doAround(joinPoint: ProceedingJoinPoint): Any {
         val request = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
 
         var info = ""
@@ -114,16 +114,13 @@ class LogAspect {
         var params = StringBuffer("")
         try {
             if (joinPoint.args != null && joinPoint.args.isNotEmpty()) {
-                for (i in 0 until joinPoint.args.size) {
-                    val arg: String
-                    val obj = joinPoint.args[i]
-
-                    arg = if (obj is MultipartHttpServletRequest)
-                        "{\"" + (obj.parameterMap["postJsonData"]?.get(0) ?: "") + "\"}"
-                    else if (obj is ServletRequest || obj is ServletResponse || obj is ServletRequest)
+                for (element in joinPoint.args) {
+                    val arg: String = if (element is MultipartHttpServletRequest)
+                        "{\"" + (element.parameterMap["postJsonData"]?.get(0) ?: "") + "\"}"
+                    else if (element is ServletRequest || element is ServletResponse || element is ServletRequest)
                         continue
                     else
-                        GsonFactory.getCustomWhitDateFormat().toJson(obj)
+                        GsonFactory.getCustomWhitDateFormat().toJson(element)
 
                     params.append(arg).append(";")
                 }
