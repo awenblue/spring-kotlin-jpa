@@ -19,14 +19,33 @@ package com.awen.spring.service
 
 import org.springframework.stereotype.Service
 import java.util.concurrent.Executors
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 @Service("taskService")
 class TaskServiceExecutor: TaskService {
 
-    private val executorService = Executors.newFixedThreadPool(5)
+    private val CORE_POOL_SIZE = 20
+    private val MAX_POOL_SIZE = 500
+    private val KEEP_ALIVE_TIME = 120
+    private val TIME_UNIT = TimeUnit.SECONDS
+    private val WORK_QUEUE = LinkedBlockingQueue<Runnable>()
+
+    private lateinit var mThreadPoolExecutor: ThreadPoolExecutor
+
+    init {
+        val keepAlive = KEEP_ALIVE_TIME.toLong()
+        mThreadPoolExecutor = ThreadPoolExecutor(
+                CORE_POOL_SIZE,
+                MAX_POOL_SIZE,
+                keepAlive,
+                TIME_UNIT,
+                WORK_QUEUE)
+    }
 
     override fun run(runnable: Runnable) {
-        executorService.submit(runnable)
+        mThreadPoolExecutor.submit(runnable)
     }
 
 }
