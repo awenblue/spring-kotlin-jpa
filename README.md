@@ -6,14 +6,18 @@
 
 
 ## 目录简介
-
-    common      请求参数和返回DTO 
-    config      日志aop，swagger接口配置 
-    controller  controller 
-    repository  数据库配置，包含jpa
-    service     逻辑service和数据service 
-    util        工具
-
+    src/
+        cache       缓存管理
+        common      请求参数和返回DTO 
+        config      日志aop，swagger接口配置 
+        controller  controller 
+        repository  数据库配置，包含jpa
+        service     逻辑service和数据service 
+        model       业务逻辑对象
+        util        工具
+        
+    根目录/
+        nginx/      docker配置文件
 
 
 ## 功能配置
@@ -22,6 +26,8 @@
     验证码生成  ✔
     memcached缓存配置  ✔
     redis配置  ✔
+    docker-compose启动 ✔
+    jib打包单独项目部署到仓库 ✔ 
     登录token生成   ✖
     请求头token校验 ✖
     
